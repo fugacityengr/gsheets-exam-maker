@@ -80,7 +80,7 @@ function createTemplate() {
     .setHorizontalAlignment("center");
 
   // Options Column Formatting
-  s.getRange("D5:G101").setBackground("#d4dee5");
+  s.getRange("D5:H101").setBackground("#d4dee5");
 
   // Points Column Formatting
   s.getRange("C5:C101").setBackground("#ffff66");
