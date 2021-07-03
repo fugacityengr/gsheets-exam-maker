@@ -130,8 +130,9 @@ function body(s) {
   // DriveApp.getRootFolder().removeFile(file);
 
   for (var x = 0; x < nr; x++) {
-    // Beginning of for loop with x
+    // Get form object type
     var i = d[x][0];
+
     var cr = 1 + x;
     var ro = s.getRange(cr, 8, 1, 10);
     var op = ro.getValues();
@@ -139,18 +140,7 @@ function body(s) {
       continue;
     } else if (i == "CHOICE") {
       var arr = [];
-
-      if (d[0][11] == "YES") {
-        var its = f.getItems();
-        for (var w = 0; w < its.length; w += 1) {
-          var ite = its[w];
-          if (ite.getTitle() === "CHOICE") {
-            var q = ite.asMultipleChoiceItem().duplicate();
-          }
-        }
-      } else {
-        var q = f.addMultipleChoiceItem();
-      }
+      var q = f.addMultipleChoiceItem();
 
       q.setTitle(d[x][1]).setHelpText(d[x][2]).setRequired(true);
 
