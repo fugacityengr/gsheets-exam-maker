@@ -144,21 +144,21 @@ function body(s) {
         continue;
       case "CHOICE":
         // Add choice logic
+        var arr = [];
+
+        var q = f.addMultipleChoiceItem();
+        q.setTitle(d[x][1]).setRequired(true);
+
+        if (d[x][2] !== "") {
+          q.setPoints(d[x][2]);
+        }
+
         break;
     }
 
     if (i == "") {
       continue;
     } else if (i == "CHOICE") {
-      var arr = [];
-      var q = f.addMultipleChoiceItem();
-
-      q.setTitle(d[x][1]).setHelpText(d[x][2]).setRequired(true);
-
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
-      }
-
       for (var ccc = 8; ccc < nc; ccc++) {
         var cu = 1 + ccc;
         if (
