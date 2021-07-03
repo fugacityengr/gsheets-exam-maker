@@ -129,14 +129,24 @@ function body(s) {
   // fol.addFile(file);
   // DriveApp.getRootFolder().removeFile(file);
 
-  for (var x = 0; x < nr; x++) {
+  // Iterate over the rows
+  for (var x = 4; x < nr; x++) {
     // Get form object type
     var i = d[x][0];
     // TODO: Update ranges used in getting values
     var cr = 1 + x;
-    var ro = s.getRange(cr, 8, 1, 10);
+    var ro = s.getRange(cr, 4, 1, 5);
     var op = ro.getValues();
     // TODO: Change if-else statements to switch
+
+    switch (i) {
+      case "":
+        continue;
+      case "CHOICE":
+        // Add choice logic
+        break;
+    }
+
     if (i == "") {
       continue;
     } else if (i == "CHOICE") {
