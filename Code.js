@@ -124,8 +124,9 @@ function body(s) {
   var file = DriveApp.getFileById(id);
   // Add this file to the specified folder
   // By default, forms created are added to the root folder of Google Drive
-  fol.addFile(file);
-  DriveApp.getRootFolder().removeFile(file);
+  file.moveTo(fol);
+  // fol.addFile(file);
+  // DriveApp.getRootFolder().removeFile(file);
 
   for (var x = 0; x < nr; x++) {
     // Beginning of for loop with x
