@@ -100,19 +100,30 @@ function body(s) {
   var lr = s.getLastRow();
   var lc = s.getLastColumn();
   var d = r.getValues();
-  var fol = DriveApp.getFolderById(d[0][3]);
 
+  // Get Drive Folder
+  var fol = DriveApp.getFolderById(d[2][1]);
+
+  // Create form with Form Title
   var fm = FormApp.create(d[0][1]);
+  // Get the id of the created form object
   var id = fm.getId();
+  // Open the form object
   var f = FormApp.openById(id);
 
+  // Set Form Description
   f.setDescription(d[1][1]);
+  // Set the Form as a Quiz Form
   f.setIsQuiz(true);
 
+  // Get the Public URL of the Form and place on D1
   var ur = f.getPublishedUrl();
-  s.getRange("F1").setValue(ur);
+  s.getRange("D1").setValue(ur);
 
+  // Get the id of the Google Form file in Google Drive
   var file = DriveApp.getFileById(id);
+  // Add this file to the specified folder
+  // By default, forms created are added to the root folder of Google Drive
   fol.addFile(file);
   DriveApp.getRootFolder().removeFile(file);
 
