@@ -1,0 +1,19 @@
+{
+  "name": "gas_test_forms",
+  "version": "1.1.0",
+  "description": "Google Apps Script to create multiple choice exam in Google Forms from a Google Sheet",
+  "main": "Code.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fugacityengr/gsheets-exam-maker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fugacityengr/gsheets-exam-maker/issues"
+  },
+  "homepage": "https://github.com/fugacityengr/gsheets-exam-maker#readme"
+}

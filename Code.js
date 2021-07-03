@@ -73,7 +73,7 @@ function createTemplate() {
     .setHorizontalAlignment("center");
 
   // Options
-  s.getRange("D4:G4")
+  s.getRange("D4:H4")
     .setValue("OPTION")
     .setFontWeight("bold")
     .setBackground("#d4dee5")
@@ -132,7 +132,7 @@ function body(s) {
   for (var x = 0; x < nr; x++) {
     // Get form object type
     var i = d[x][0];
-
+    // TODO: Update ranges used in getting values
     var cr = 1 + x;
     var ro = s.getRange(cr, 8, 1, 10);
     var op = ro.getValues();
