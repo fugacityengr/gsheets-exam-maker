@@ -125,6 +125,7 @@ function body(s) {
   // Add this file to the specified folder
   // By default, forms created are added to the root folder of Google Drive
   file.moveTo(fol);
+  // !Deprecated method, replaced by moveTo
   // fol.addFile(file);
   // DriveApp.getRootFolder().removeFile(file);
 
