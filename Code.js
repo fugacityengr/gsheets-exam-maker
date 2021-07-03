@@ -91,6 +91,8 @@ function createForm() {
   body(s);
 }
 
+// TODO: Break apart body function to separate functions handling each type of form object
+// Main Function Call to Create Form
 function body(s) {
   var r = s.getDataRange();
   var nr = r.getNumRows();
@@ -100,15 +102,9 @@ function body(s) {
   var d = r.getValues();
   var fol = DriveApp.getFolderById(d[0][3]);
 
-  if (d[0][7] === "YES") {
-    var fm = DriveApp.getFileById(d[0][9]).makeCopy(d[0][1], fol);
-    var id = fm.getId();
-    var f = FormApp.openById(id);
-  } else {
-    var fm = FormApp.create(d[0][1]);
-    var id = fm.getId();
-    var f = FormApp.openById(id);
-  }
+  var fm = FormApp.create(d[0][1]);
+  var id = fm.getId();
+  var f = FormApp.openById(id);
 
   f.setDescription(d[1][1]);
   f.setIsQuiz(true);
