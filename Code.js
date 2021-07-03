@@ -136,6 +136,7 @@ function body(s) {
     var cr = 1 + x;
     var ro = s.getRange(cr, 8, 1, 10);
     var op = ro.getValues();
+    // TODO: Change if-else statements to switch
     if (i == "") {
       continue;
     } else if (i == "CHOICE") {
