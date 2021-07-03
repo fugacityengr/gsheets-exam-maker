@@ -133,17 +133,19 @@ function body(s) {
   for (var x = 4; x < nr; x++) {
     // Get form object type
     var i = d[x][0];
-    // TODO: Update ranges used in getting values
+    // Ranges used in getting values
     var cr = 1 + x;
     var ro = s.getRange(cr, 4, 1, 5);
     var op = ro.getValues();
+
     // TODO: Change if-else statements to switch
+    // TODO: Continue rewriting logic from LIST
 
     switch (i) {
       case "":
         continue;
+
       case "CHOICE":
-        // Add choice logic
         var arr = [];
 
         var q = f.addMultipleChoiceItem();
@@ -153,42 +155,51 @@ function body(s) {
           q.setPoints(d[x][2]);
         }
 
+        for (var ccc = 3; ccc < nc; ccc++) {
+          var cu = 1 + ccc;
+          var cellData = s.getRange(cr, cu, 1, 1).getValue();
+          var cellColor = s.getRange(cr, cu, 1, 1).getBackground();
+          if (cellData === "") continue;
+          switch (cellColor) {
+            case "#00ff00":
+              arr.push(q.createChoice(d[x][ccc], true));
+              break;
+            default:
+              arr.push(q.createChoice(d[x][ccc], false));
+              break;
+          }
+          q.setChoices(arr);
+        }
+        break;
+
+      case "LIST":
+        break;
+
+      case "CHECKBOX":
+        break;
+
+      case "DATE":
+        break;
+
+      case "PAGE":
+        break;
+
+      case "PARAGRAPH":
+        break;
+
+      case "SECTION":
+        break;
+
+      case "TEXT":
+        break;
+
+      case "TIME":
         break;
     }
 
     if (i == "") {
       continue;
     } else if (i == "CHOICE") {
-      for (var ccc = 8; ccc < nc; ccc++) {
-        var cu = 1 + ccc;
-        if (
-          s.getRange(cr, cu, 1, 1).getValue() !== "" &&
-          s.getRange(cr, cu, 1, 1).getBackground() === "#00ff00"
-        ) {
-          var q1 = q.createChoice(d[x][ccc], true);
-          arr.push(q1);
-        } else if (
-          s.getRange(cr, cu, 1, 1).getValue() !== "" &&
-          s.getRange(cr, cu, 1, 1).getBackground() !== "#00ff00"
-        ) {
-          var q1 = q.createChoice(d[x][ccc], false);
-          arr.push(q1);
-        }
-      }
-
-      q.setChoices(arr);
-
-      if (d[x][4] !== "") {
-        var correctFeedback = FormApp.createFeedback().setText(d[x][4]).build();
-        q.setFeedbackForCorrect(correctFeedback);
-      }
-      if (d[x][5] !== "") {
-        var incorrectFeedback = FormApp.createFeedback()
-          .setText(d[x][5])
-          .addLink(d[x][6], d[x][7])
-          .build();
-        q.setFeedbackForIncorrect(incorrectFeedback);
-      }
     } else if (i == "LIST") {
       var arr = [];
 
