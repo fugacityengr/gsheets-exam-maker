@@ -92,9 +92,9 @@ function createForm() {
 }
 
 // Helper function to set question choices
-function choiceMaker(sheet, rowNum, rowData, question) {
+function choiceMaker(sheet, rowNum, rowData, numColumns, question) {
   var arr = [];
-  for (var ccc = 3; ccc < nc; ccc++) {
+  for (var ccc = 3; ccc < numColumns; ccc++) {
     var cu = 1 + ccc;
     var cellData = sheet.getRange(cr, cu, 1, 1).getValue();
     var cellColor = sheet.getRange(cr, cu, 1, 1).getBackground();
@@ -123,6 +123,7 @@ function pointSetter(rowNum, rowData, question) {
 function body(s) {
   var r = s.getDataRange();
   var nr = r.getNumRows();
+  var nc = r.getNumColumns();
   var d = r.getValues();
 
   // Get Drive Folder
@@ -166,21 +167,21 @@ function body(s) {
       case "CHOICE":
         var q = f.addMultipleChoiceItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
-        choiceMaker(s, x, d, q);
+        choiceMaker(s, x, d, nc, q);
 
         break;
 
       case "LIST":
         var q = f.addListItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
-        choiceMaker(s, x, d, q);
+        choiceMaker(s, x, d, nc, q);
 
         break;
 
       case "CHECKBOX":
         var q = f.addCheckboxItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
-        choiceMaker(s, x, d, q);
+        choiceMaker(s, x, d, nc, q);
         break;
 
       case "DATE":
