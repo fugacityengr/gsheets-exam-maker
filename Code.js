@@ -168,11 +168,35 @@ function body(s) {
               arr.push(q.createChoice(d[x][ccc], false));
               break;
           }
-          q.setChoices(arr);
         }
+        q.setChoices(arr);
         break;
 
       case "LIST":
+        var arr = [];
+        var q = f.addListItem();
+
+        q.setTitle(d[x][1]).setRequired(true);
+
+        if (d[x][2] !== "") {
+          q.setPoints(d[x][2]);
+        }
+
+        for (var ccc = 3; ccc < nc; ccc++) {
+          var cu = 1 + ccc;
+          var cellData = s.getRange(cr, cu, 1, 1).getValue();
+          var cellColor = s.getRange(cr, cu, 1, 1).getBackground();
+          if (cellData === "") continue;
+          switch (cellColor) {
+            case "#00ff00":
+              arr.push(q.createChoice(d[x][ccc], true));
+              break;
+            default:
+              arr.push(q.createChoice(d[x][ccc], false));
+              break;
+          }
+        }
+        q.setChoices(arr);
         break;
 
       case "CHECKBOX":
@@ -201,56 +225,6 @@ function body(s) {
       continue;
     } else if (i == "CHOICE") {
     } else if (i == "LIST") {
-      var arr = [];
-
-      if (d[0][11] == "YES") {
-        var its = f.getItems();
-        for (var w = 0; w < its.length; w += 1) {
-          var ite = its[w];
-          if (ite.getTitle() === "LIST") {
-            var q = ite.asListItem().duplicate();
-          }
-        }
-      } else {
-        var q = f.addListItem();
-      }
-
-      q.setTitle(d[x][1]).setHelpText(d[x][2]).setRequired(true);
-
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
-      }
-
-      for (var ccc = 8; ccc < nc; ccc++) {
-        var cu = 1 + ccc;
-        if (
-          s.getRange(cr, cu, 1, 1).getValue() !== "" &&
-          s.getRange(cr, cu, 1, 1).getBackground() === "#00ff00"
-        ) {
-          var q1 = q.createChoice(d[x][ccc], true);
-          arr.push(q1);
-        } else if (
-          s.getRange(cr, cu, 1, 1).getValue() !== "" &&
-          s.getRange(cr, cu, 1, 1).getBackground() !== "#00ff00"
-        ) {
-          var q1 = q.createChoice(d[x][ccc], false);
-          arr.push(q1);
-        }
-      }
-
-      q.setChoices(arr);
-
-      if (d[x][4] !== "") {
-        var correctFeedback = FormApp.createFeedback().setText(d[x][4]).build();
-        q.setFeedbackForCorrect(correctFeedback);
-      }
-      if (d[x][5] !== "") {
-        var incorrectFeedback = FormApp.createFeedback()
-          .setText(d[x][5])
-          .addLink(d[x][6], d[x][7])
-          .build();
-        q.setFeedbackForIncorrect(incorrectFeedback);
-      }
     } else if (i == "CHECKBOX") {
       var arr = [];
 
