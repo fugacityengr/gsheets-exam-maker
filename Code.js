@@ -94,6 +94,7 @@ function createForm() {
 // Helper function to set question choices
 function choiceMaker(sheet, rowNum, rowData, numColumns, question) {
   var arr = [];
+  var cr = rowNum + 1;
   for (var ccc = 3; ccc < numColumns; ccc++) {
     var cu = 1 + ccc;
     var cellData = sheet.getRange(cr, cu, 1, 1).getValue();
