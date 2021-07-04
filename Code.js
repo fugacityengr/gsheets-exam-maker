@@ -215,4 +215,5 @@ function body(s) {
         pointSetter(x, d, q);
         break;
     }
+  }
 }
