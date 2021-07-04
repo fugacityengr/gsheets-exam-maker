@@ -91,6 +91,33 @@ function createForm() {
   body(s);
 }
 
+// Helper function to set question choices
+function choiceMaker(sheet, rowNum, rowData, question) {
+  var arr = [];
+  for (var ccc = 3; ccc < nc; ccc++) {
+    var cu = 1 + ccc;
+    var cellData = sheet.getRange(cr, cu, 1, 1).getValue();
+    var cellColor = sheet.getRange(cr, cu, 1, 1).getBackground();
+    if (cellData === "") continue;
+    switch (cellColor) {
+      case "#00ff00":
+        arr.push(question.createChoice(rowData[rowNum][ccc], true));
+        break;
+      default:
+        arr.push(question.createChoice(rowData[rowNum][ccc], false));
+        break;
+    }
+  }
+  question.setChoices(arr);
+}
+
+// Helper function to check if points were given and to set if available
+function pointSetter(rowNum, rowData, question) {
+  if (rowData[rowNum][2] !== "") {
+    question.setPoints(rowData[rowNum][2]);
+  }
+}
+
 // TODO: Break apart body function to separate functions handling each type of form object
 // Main Function Call to Create Form
 function body(s) {
@@ -139,64 +166,26 @@ function body(s) {
     var op = ro.getValues();
 
     // TODO: Change if-else statements to switch
-    // TODO: Continue rewriting logic from LIST
 
     switch (i) {
       case "":
+        // Move on to the next cell
         continue;
 
       case "CHOICE":
-        var arr = [];
-
         var q = f.addMultipleChoiceItem();
         q.setTitle(d[x][1]).setRequired(true);
+        pointSetter(x, d, q);
+        choiceMaker(s, x, d, q);
 
-        if (d[x][2] !== "") {
-          q.setPoints(d[x][2]);
-        }
-
-        for (var ccc = 3; ccc < nc; ccc++) {
-          var cu = 1 + ccc;
-          var cellData = s.getRange(cr, cu, 1, 1).getValue();
-          var cellColor = s.getRange(cr, cu, 1, 1).getBackground();
-          if (cellData === "") continue;
-          switch (cellColor) {
-            case "#00ff00":
-              arr.push(q.createChoice(d[x][ccc], true));
-              break;
-            default:
-              arr.push(q.createChoice(d[x][ccc], false));
-              break;
-          }
-        }
-        q.setChoices(arr);
         break;
 
       case "LIST":
-        var arr = [];
         var q = f.addListItem();
-
         q.setTitle(d[x][1]).setRequired(true);
+        pointSetter(x, d, q);
+        choiceMaker(s, x, d, q);
 
-        if (d[x][2] !== "") {
-          q.setPoints(d[x][2]);
-        }
-
-        for (var ccc = 3; ccc < nc; ccc++) {
-          var cu = 1 + ccc;
-          var cellData = s.getRange(cr, cu, 1, 1).getValue();
-          var cellColor = s.getRange(cr, cu, 1, 1).getBackground();
-          if (cellData === "") continue;
-          switch (cellColor) {
-            case "#00ff00":
-              arr.push(q.createChoice(d[x][ccc], true));
-              break;
-            default:
-              arr.push(q.createChoice(d[x][ccc], false));
-              break;
-          }
-        }
-        q.setChoices(arr);
         break;
 
       case "CHECKBOX":
@@ -228,22 +217,12 @@ function body(s) {
     } else if (i == "CHECKBOX") {
       var arr = [];
 
-      if (d[0][11] == "YES") {
-        var its = f.getItems();
-        for (var w = 0; w < its.length; w += 1) {
-          var ite = its[w];
-          if (ite.getTitle() === "CHECKBOX") {
-            var q = ite.asCheckboxItem().duplicate();
-          }
-        }
-      } else {
-        var q = f.addCheckboxItem();
-      }
+      var q = f.addCheckboxItem();
 
-      q.setTitle(d[x][1]).setHelpText(d[x][2]).setRequired(true);
+      q.setTitle(d[x][1]).setRequired(true);
 
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
+      if (d[x][2] !== "") {
+        q.setPoints(d[x][2]);
       }
 
       for (var ccc = 8; ccc < nc; ccc++) {
@@ -262,20 +241,7 @@ function body(s) {
           arr.push(q1);
         }
       }
-
       q.setChoices(arr);
-
-      if (d[x][4] !== "") {
-        var correctFeedback = FormApp.createFeedback().setText(d[x][4]).build();
-        q.setFeedbackForCorrect(correctFeedback);
-      }
-      if (d[x][5] !== "") {
-        var incorrectFeedback = FormApp.createFeedback()
-          .setText(d[x][5])
-          .addLink(d[x][6], d[x][7])
-          .build();
-        q.setFeedbackForIncorrect(incorrectFeedback);
-      }
     } else if (i == "GRID") {
       var arr1 = [];
       for (q = 0; q < op[0].length; q++) {
