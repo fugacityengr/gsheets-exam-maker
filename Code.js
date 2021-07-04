@@ -123,9 +123,6 @@ function pointSetter(rowNum, rowData, question) {
 function body(s) {
   var r = s.getDataRange();
   var nr = r.getNumRows();
-  var nc = r.getNumColumns();
-  var lr = s.getLastRow();
-  var lc = s.getLastColumn();
   var d = r.getValues();
 
   // Get Drive Folder
@@ -160,216 +157,64 @@ function body(s) {
   for (var x = 4; x < nr; x++) {
     // Get form object type
     var i = d[x][0];
-    // Ranges used in getting values
-    var cr = 1 + x;
-    var ro = s.getRange(cr, 4, 1, 5);
-    var op = ro.getValues();
-
-    // TODO: Change if-else statements to switch
-
+    
     switch (i) {
       case "":
         // Move on to the next cell
         continue;
 
       case "CHOICE":
-        var q = f.addMultipleChoiceItem();
-        q.setTitle(d[x][1]).setRequired(true);
+        var q = f.addMultipleChoiceItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, q);
 
         break;
 
       case "LIST":
-        var q = f.addListItem();
-        q.setTitle(d[x][1]).setRequired(true);
+        var q = f.addListItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, q);
 
         break;
 
       case "CHECKBOX":
+        var q = f.addCheckboxItem().setTitle(d[x][1]).setRequired(true);
+        pointSetter(x, d, q);
+        choiceMaker(s, x, d, q);
         break;
 
       case "DATE":
+        f.addDateItem().setTitle(d[x][1]).setRequired(true);
+
         break;
 
       case "PAGE":
+        f.addPageBreakItem().setTitle(d[x][1]);
+
         break;
 
       case "PARAGRAPH":
+        var q = f.addParagraphTextItem().setTitle(d[x][1]).setRequired(true);
+        pointSetter(x, d, q);
+
         break;
 
       case "SECTION":
+        f.addSectionHeaderItem().setTitle(d[x][1]);
+
         break;
 
       case "TEXT":
+        var q = f.addTextItem().setTitle(d[x][1]).setRequired(true);
+        pointSetter(x, d, q);
+
         break;
 
       case "TIME":
+        var q = f.addTimeItem().setTitle(d[x][1]).setRequired(true);
+        pointSetter(x, d, q);
         break;
     }
-
-    if (i == "") {
-      continue;
-    } else if (i == "CHOICE") {
-    } else if (i == "LIST") {
-    } else if (i == "CHECKBOX") {
-      var arr = [];
-
-      var q = f.addCheckboxItem();
-
-      q.setTitle(d[x][1]).setRequired(true);
-
-      if (d[x][2] !== "") {
-        q.setPoints(d[x][2]);
-      }
-
-      for (var ccc = 8; ccc < nc; ccc++) {
-        var cu = 1 + ccc;
-        if (
-          s.getRange(cr, cu, 1, 1).getValue() !== "" &&
-          s.getRange(cr, cu, 1, 1).getBackground() === "#00ff00"
-        ) {
-          var q1 = q.createChoice(d[x][ccc], true);
-          arr.push(q1);
-        } else if (
-          s.getRange(cr, cu, 1, 1).getValue() !== "" &&
-          s.getRange(cr, cu, 1, 1).getBackground() !== "#00ff00"
-        ) {
-          var q1 = q.createChoice(d[x][ccc], false);
-          arr.push(q1);
-        }
-      }
-      q.setChoices(arr);
-    } else if (i == "GRID") {
-      var arr1 = [];
-      for (q = 0; q < op[0].length; q++) {
-        if (op[0][q] !== "") {
-          arr1.push(op[0][q]);
-        }
-      }
-      var arr2 = [];
-      for (q = 0; q < op[0].length; q++) {
-        if (op[0][q] !== "") {
-          arr2.push(op[0][q]);
-        }
-      }
-      f.addGridItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setRequired(true)
-        .setRows(arr1)
-        .setColumns(arr2);
-    } else if (i == "CHECKGRID") {
-      var arr1 = [];
-      for (q = 0; q < op[0].length; q++) {
-        if (op[0][q] !== "") {
-          arr1.push(op[0][q]);
-        }
-      }
-      var arr2 = [];
-      for (q = 0; q < op[0].length; q++) {
-        if (op[0][q] !== "") {
-          arr2.push(op[0][q]);
-        }
-      }
-      f.addCheckboxGridItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setRequired(true)
-        .setRows(arr1)
-        .setColumns(arr2);
-    } else if (i == "TEXT") {
-      var q = f
-        .addTextItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setRequired(true);
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
-      }
-    } else if (i == "PARAGRAPH") {
-      var q = f
-        .addParagraphTextItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setRequired(true);
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
-      }
-    } else if (i == "SECTION") {
-      f.addSectionHeaderItem().setTitle(d[x][1]).setHelpText(d[x][2]);
-    } else if (i == "PAGE") {
-      f.addPageBreakItem().setTitle(d[x][1]).setHelpText(d[x][2]);
-    } else if (i == "IMAGE1") {
-      var img = UrlFetchApp.fetch(d[x][6]);
-      f.addImageItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setImage(img)
-        .setAlignment(FormApp.Alignment.CENTER)
-        .setWidth(800);
-    } else if (i == "IMAGE2") {
-      var file = DriveApp.getFileById(d[x][6]);
-      f.addImageItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setImage(file)
-        .setAlignment(FormApp.Alignment.CENTER)
-        .setWidth(800);
-    } else if (i == "VIDEO") {
-      f.addVideoItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setVideoUrl(d[x][6])
-        .setAlignment(FormApp.Alignment.CENTER)
-        .setWidth(800);
-    } else if (i == "SCALE") {
-      var q = f
-        .addScaleItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setRequired(true)
-        .setLabels(d[x][6], d[x][7])
-        .setBounds(d[x][4], d[x][5]);
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
-      }
-    } else if (i == "TIME") {
-      var q = f
-        .addTimeItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setRequired(true);
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
-      }
-    } else if (i == "DATE") {
-      var q = f
-        .addDateItem()
-        .setTitle(d[x][1])
-        .setHelpText(d[x][2])
-        .setRequired(true);
-      if (d[x][3] !== "") {
-        q.setPoints(d[x][3]);
-      }
-    } else if (i == "ACCEPTANCE") {
-      var item = f.addMultipleChoiceItem();
-      var goSubmit = item.createChoice(
-        "YES",
-        FormApp.PageNavigationType.SUBMIT
-      );
-      var goRestart = item.createChoice(
-        "NO",
-        FormApp.PageNavigationType.RESTART
-      );
-      item.setRequired(true);
-      item.setTitle(d[x][1]);
-      item.setHelpText(d[x][2]);
-      item.setChoices([goSubmit, goRestart]);
-    }
-  } // End of principle for loop with x
 
   var iti = f.getItems();
   for (var y = 0; y < iti.length; y += 1) {
@@ -382,4 +227,4 @@ function body(s) {
       f.deleteItem(ito);
     }
   }
-} // End of entire scipt
+} // End of entire script
