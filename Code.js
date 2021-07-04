@@ -153,7 +153,7 @@ function body(s) {
   // !Deprecated method, replaced by moveTo
   // fol.addFile(file);
   // DriveApp.getRootFolder().removeFile(file);
-
+  let q = null;
   // Iterate over the rows
   for (let x = 4; x < nr; x++) {
     // Get form object type
@@ -165,21 +165,21 @@ function body(s) {
         continue;
 
       case "CHOICE":
-        let q = f.addMultipleChoiceItem().setTitle(d[x][1]).setRequired(true);
+        q = f.addMultipleChoiceItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, nc, q);
 
         break;
 
       case "LIST":
-        let q = f.addListItem().setTitle(d[x][1]).setRequired(true);
+        q = f.addListItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, nc, q);
 
         break;
 
       case "CHECKBOX":
-        let q = f.addCheckboxItem().setTitle(d[x][1]).setRequired(true);
+        q = f.addCheckboxItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, nc, q);
         break;
@@ -195,7 +195,7 @@ function body(s) {
         break;
 
       case "PARAGRAPH":
-        let q = f.addParagraphTextItem().setTitle(d[x][1]).setRequired(true);
+        q = f.addParagraphTextItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
 
         break;
@@ -206,13 +206,13 @@ function body(s) {
         break;
 
       case "TEXT":
-        let q = f.addTextItem().setTitle(d[x][1]).setRequired(true);
+        q = f.addTextItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
 
         break;
 
       case "TIME":
-        let q = f.addTimeItem().setTitle(d[x][1]).setRequired(true);
+        q = f.addTimeItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         break;
     }
