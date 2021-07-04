@@ -157,7 +157,7 @@ function body(s) {
   for (var x = 4; x < nr; x++) {
     // Get form object type
     var i = d[x][0];
-    
+
     switch (i) {
       case "":
         // Move on to the next cell
@@ -215,16 +215,4 @@ function body(s) {
         pointSetter(x, d, q);
         break;
     }
-
-  var iti = f.getItems();
-  for (var y = 0; y < iti.length; y += 1) {
-    var ito = iti[y];
-    if (ito.getTitle() === "CHOICE") {
-      f.deleteItem(ito);
-    } else if (ito.getTitle() === "LIST") {
-      f.deleteItem(ito);
-    } else if (ito.getTitle() === "CHECKBOX") {
-      f.deleteItem(ito);
-    }
-  }
-} // End of entire script
+}
