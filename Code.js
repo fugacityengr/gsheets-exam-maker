@@ -1,12 +1,12 @@
 function onOpen() {
-  var menu = SpreadsheetApp.getUi().createMenu("Forms");
+  let menu = SpreadsheetApp.getUi().createMenu("Forms");
   menu.addItem("CREATE TEMPLATE", "createTemplate").addToUi();
   menu.addItem("CREATE FORM", "createForm").addToUi();
 }
 
 function createTemplate() {
   // Initialize spreadsheet
-  var s = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  let s = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
   // Reduce number of columns and rows displayed
   s.deleteColumns(17, 8);
@@ -87,18 +87,18 @@ function createTemplate() {
 }
 
 function createForm() {
-  var s = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  let s = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   body(s);
 }
 
 // Helper function to set question choices
 function choiceMaker(sheet, rowNum, rowData, numColumns, question) {
-  var arr = [];
-  var cr = rowNum + 1;
-  for (var ccc = 3; ccc < numColumns; ccc++) {
-    var cu = 1 + ccc;
-    var cellData = sheet.getRange(cr, cu, 1, 1).getValue();
-    var cellColor = sheet.getRange(cr, cu, 1, 1).getBackground();
+  let arr = [];
+  let cr = rowNum + 1;
+  for (let ccc = 3; ccc < numColumns; ccc++) {
+    let cu = 1 + ccc;
+    let cellData = sheet.getRange(cr, cu, 1, 1).getValue();
+    let cellColor = sheet.getRange(cr, cu, 1, 1).getBackground();
     if (cellData === "") continue;
     switch (cellColor) {
       case "#00ff00":
@@ -119,23 +119,22 @@ function pointSetter(rowNum, rowData, question) {
   }
 }
 
-// TODO: Break apart body function to separate functions handling each type of form object
 // Main Function Call to Create Form
 function body(s) {
-  var r = s.getDataRange();
-  var nr = r.getNumRows();
-  var nc = r.getNumColumns();
-  var d = r.getValues();
+  let r = s.getDataRange();
+  let nr = r.getNumRows();
+  let nc = r.getNumColumns();
+  let d = r.getValues();
 
   // Get Drive Folder
-  var fol = DriveApp.getFolderById(d[2][1]);
+  let fol = DriveApp.getFolderById(d[2][1]);
 
   // Create form with Form Title
-  var fm = FormApp.create(d[0][1]);
+  let fm = FormApp.create(d[0][1]);
   // Get the id of the created form object
-  var id = fm.getId();
+  let id = fm.getId();
   // Open the form object
-  var f = FormApp.openById(id);
+  let f = FormApp.openById(id);
 
   // Set Form Description
   f.setDescription(d[1][1]);
@@ -143,11 +142,11 @@ function body(s) {
   f.setIsQuiz(true);
 
   // Get the Public URL of the Form and place on D1
-  var ur = f.getPublishedUrl();
+  let ur = f.getPublishedUrl();
   s.getRange("D1").setValue(ur);
 
   // Get the id of the Google Form file in Google Drive
-  var file = DriveApp.getFileById(id);
+  let file = DriveApp.getFileById(id);
   // Add this file to the specified folder
   // By default, forms created are added to the root folder of Google Drive
   file.moveTo(fol);
@@ -156,9 +155,9 @@ function body(s) {
   // DriveApp.getRootFolder().removeFile(file);
 
   // Iterate over the rows
-  for (var x = 4; x < nr; x++) {
+  for (let x = 4; x < nr; x++) {
     // Get form object type
-    var i = d[x][0];
+    let i = d[x][0];
 
     switch (i) {
       case "":
@@ -166,21 +165,21 @@ function body(s) {
         continue;
 
       case "CHOICE":
-        var q = f.addMultipleChoiceItem().setTitle(d[x][1]).setRequired(true);
+        let q = f.addMultipleChoiceItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, nc, q);
 
         break;
 
       case "LIST":
-        var q = f.addListItem().setTitle(d[x][1]).setRequired(true);
+        let q = f.addListItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, nc, q);
 
         break;
 
       case "CHECKBOX":
-        var q = f.addCheckboxItem().setTitle(d[x][1]).setRequired(true);
+        let q = f.addCheckboxItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         choiceMaker(s, x, d, nc, q);
         break;
@@ -196,7 +195,7 @@ function body(s) {
         break;
 
       case "PARAGRAPH":
-        var q = f.addParagraphTextItem().setTitle(d[x][1]).setRequired(true);
+        let q = f.addParagraphTextItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
 
         break;
@@ -207,13 +206,13 @@ function body(s) {
         break;
 
       case "TEXT":
-        var q = f.addTextItem().setTitle(d[x][1]).setRequired(true);
+        let q = f.addTextItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
 
         break;
 
       case "TIME":
-        var q = f.addTimeItem().setTitle(d[x][1]).setRequired(true);
+        let q = f.addTimeItem().setTitle(d[x][1]).setRequired(true);
         pointSetter(x, d, q);
         break;
     }
